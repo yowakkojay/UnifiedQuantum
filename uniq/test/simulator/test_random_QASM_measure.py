@@ -1,4 +1,3 @@
-import pytest
 import numpy as np
 from uniq.simulator.qasm_simulator import QASM_Simulator
 from uniq.test._utils import uniq_test, NotMatchError
@@ -144,7 +143,6 @@ def _run_test_random_qasm_compare_shots_impl(
         raise ValueError('Some circuits failed!')
     
 
-@pytest.mark.xfail(reason="QASM parser doesn't support if statements from qiskit transpiler output")
 @uniq_test('Test Random QASM Compare Shots')
 def run_test_random_qasm_compare_shots():
     

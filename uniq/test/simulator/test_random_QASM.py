@@ -1,4 +1,3 @@
-import pytest
 import numpy as np
 from uniq.simulator.qasm_simulator import QASM_Simulator
 from uniq.test._utils import uniq_test, NotMatchError
@@ -140,7 +139,6 @@ def _test_random_qasm_batch(
         raise ValueError('Some circuits failed!')
 
 
-@pytest.mark.xfail(reason="QASM parser doesn't support if statements from qiskit transpiler output")
 @uniq_test('Test Random QASM Statevector')
 def run_test_random_qasm_statevector():
 
@@ -156,7 +154,6 @@ def run_test_random_qasm_statevector():
                            backend_type='statevector')
 
 
-@pytest.mark.xfail(reason="QASM parser doesn't support if statements from qiskit transpiler output")
 @uniq_test('Test Random QASM Density Operator')
 def run_test_random_qasm_density_operator():
     
@@ -176,7 +173,6 @@ def run_test_random_qasm_density_operator():
                            instruction_set=gate_set,
                            backend_type='density_operator')
 
-@pytest.mark.xfail(reason="QASM parser doesn't support if statements from qiskit transpiler output")
 @uniq_test('Test Random QASM Density Operator (Qutip)')
 def run_test_random_qasm_density_operator_qutip():
     
@@ -220,8 +216,7 @@ def compare_density_operator(circuit):
             f'QuTip Result = {mat_qutip}\n'
         )
     
-@pytest.mark.xfail(reason="QASM parser doesn't support if statements from qiskit transpiler output")
-def test_random_qasm_compare_density_operator(  
+def test_random_qasm_compare_density_operator(
         random_batchsize = 100, 
         n_qubit = 5,
         n_gates = 20,
@@ -261,7 +256,6 @@ def test_random_qasm_compare_density_operator(
     if len(err_list) > 0:
         raise ValueError('Some circuits failed!')
     
-@pytest.mark.xfail(reason="QASM parser doesn't support if statements from qiskit transpiler output")
 @uniq_test('Test Random QASM Density Operator (Compare with QuTip)')
 def run_test_random_qasm_density_operator_compare_with_qutip():
     

@@ -74,6 +74,8 @@ class OpenQASM2_BaseParser:
         if 'gate' in self.raw_qasm and '{' in self.raw_qasm:
             raise NotSupportedGateError("Gate definitions are not supported yet.")
         
+        # TODO: Current check is too naive - uses substring match which causes false positives
+        # (e.g., "Unified" contains "if"). Should use regex to match QASM if keyword: r'\bif\s*\('
         # check if there is "if" statements
         if 'if' in self.raw_qasm:
             raise NotSupportedGateError("If statements are not supported yet.")
