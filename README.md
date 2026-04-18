@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="banner_uniq.png" alt="UnifiedQuantum Banner" width="100%">
+</p>
+
 # UnifiedQuantum
 
 [![PyPI version](https://badge.fury.io/py/unified-quantum.svg?icon=si%3Apython)](https://badge.fury.io/py/unified-quantum)
