@@ -7,32 +7,20 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   uniqc.task.ibm
-   uniqc.task.origin_qcloud
-   uniqc.task.originq
-   uniqc.task.originq_dummy
-   uniqc.task.platform_template
-   uniqc.task.quafu
    uniqc.task.adapters
 
 Submodules
 ----------
 
-uniqc.task.config module
-------------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: uniqc.task.config
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-uniqc.task.task\_utils module
-----------------------------------
-
-.. automodule:: uniqc.task.task_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   uniqc.task.config
+   uniqc.task.normalizers
+   uniqc.task.optional_deps
+   uniqc.task.persistence
+   uniqc.task.result_types
+   uniqc.task.store
 
 Module contents
 ---------------

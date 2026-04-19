@@ -203,7 +203,75 @@ html_theme_options = {
 
 suppress_warnings = ["myst.xref_missing"]
 
-autodoc_default_options = {"no-index": True}
+# Configure intersphinx mappings to resolve external refs (numpy, torch, etc.)
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "numpy": ("https://numpy.org/doc/stable", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy", None),
+    "torch": ("https://pytorch.org/docs/stable", None),
+}
+# Fall back to local inventories if offline; don't fail the build on timeout
+intersphinx_timeout = 5
+
+# Ignore cross-references that autodoc can't resolve but aren't actionable:
+# short names in docstrings, re-exports (registered at canonical location),
+# external types without an intersphinx inventory, and local type vars.
+nitpick_ignore = [
+    ("py:class", "QubitInput"),
+    ("py:class", "Circuit"),
+    ("py:class", "'Circuit'"),
+    ("py:class", "QuantumCircuit"),
+    ("py:class", "'QuantumCircuit'"),
+    ("py:class", "'qiskit.QuantumCircuit'"),
+    ("py:class", "qiskit.QuantumCircuit"),
+    ("py:class", "'QuantumBackend'"),
+    ("py:class", "Path"),
+    ("py:class", "QReg"),
+    ("py:class", "'QReg'"),
+    ("py:class", "ShadowSnapshot"),
+    ("py:class", "TaskStore"),
+    ("py:class", "CircuitControlContext"),
+    ("py:class", "CircuitDagContext"),
+    ("py:class", "OpCode"),
+    ("py:class", "CbitSpec"),
+    ("py:class", "AnalysisResult"),
+    ("py:class", "operation"),
+    ("py:class", "optional"),
+    ("py:class", "T"),
+    ("py:class", "np.ndarray"),
+    ("py:class", "pd.DataFrame"),
+    ("py:class", "qprog"),
+    ("py:class", "QProg"),
+    ("py:class", "Qobj"),
+    ("py:class", "sympy.core.symbol.Symbol"),
+    # Classes re-exported from sub-package __init__; canonical location is the
+    # sub-module, so the short re-export path won't resolve.
+    ("py:class", "uniqc.circuit_builder.Circuit"),
+    ("py:class", "uniqc.simulator.OriginIR_Simulator"),
+    ("py:class", "uniqc.simulator.OriginIR_NoisySimulator"),
+    ("py:class", "uniqc.simulator.QASM_Simulator"),
+    ("py:class", "uniqc.simulator.OpcodeSimulator"),
+    ("py:class", "uniqc.algorithmics.measurement.classical_shadow.ShadowSnapshot"),
+    ("py:class", "uniqc.circuit_builder.qcircuit.CircuitDagContext"),
+    ("py:exc", "MissingDependencyError"),
+    ("py:exc", "NetworkError"),
+    ("py:exc", "ConfigError"),
+    ("py:exc", "BackendNotFoundError"),
+    ("py:exc", "BackendNotAvailableError"),
+    ("py:exc", "AuthenticationError"),
+    ("py:exc", "InsufficientCreditsError"),
+    ("py:exc", "QuotaExceededError"),
+    ("py:exc", "TaskTimeoutError"),
+    ("py:exc", "TaskFailedError"),
+    ("py:exc", "TaskNotFoundError"),
+    ("py:func", "rotation_prepare"),
+    ("py:func", "dicke_state_circuit"),
+    ("py:mod", "uniqc.task.adapters.dummy_adapter"),
+    ("py:obj", "uniqc.circuit_adapter.T"),
+    ("py:data", "MIGRATIONS"),
+    ("py:data", "CURRENT_SCHEMA_VERSION"),
+    ("py:data", "APPLICATION_ID"),
+]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

@@ -139,7 +139,7 @@ class TestDummyAdapter:
         assert result["status"] == "failed"
 
 
-class TestQPANDALITEDummyEnv:
+class TestUniqcDummyEnv:
     """Tests for UNIQC_DUMMY environment variable."""
 
     def test_env_variable_true(self, monkeypatch):

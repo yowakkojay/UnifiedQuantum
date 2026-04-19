@@ -126,7 +126,7 @@ UnifiedQuantum 提供原生的 Circuit API，但你也可以使用 Qiskit、Cirq
    :maxdepth: 2
    :caption: API 参考
 
-   source/uniq_api
+   source/uniqc_api
 
 Indices and tables
 ==================
