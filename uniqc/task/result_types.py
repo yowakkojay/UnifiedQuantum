@@ -10,7 +10,8 @@ The UnifiedResult dataclass provides:
 - Optional advanced results (expectation values, statevector)
 - Raw platform result for debugging
 
-Usage:
+Usage::
+
     # Create from counts
     result = UnifiedResult.from_counts(
         counts={"00": 512, "11": 488},

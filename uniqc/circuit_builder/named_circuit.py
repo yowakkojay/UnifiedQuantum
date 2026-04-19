@@ -8,7 +8,8 @@ This module provides:
 Named circuits can be applied to parent circuits with qubit mapping
 and parameter binding, similar to QASM3 gate definitions.
 
-Example usage:
+Example usage::
+
     @circuit_def(name="bell_pair", qregs={"q": 2})
     def bell_pair(circ, q):
         circ.h(q[0])

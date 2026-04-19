@@ -187,13 +187,12 @@ def test_ibm_connectivity(
         timeout: Request timeout in seconds (default: 30.0).
 
     Returns:
-        dict with connectivity test results:
-        {
-            'success': bool,
-            'message': str,
-            'proxy_used': dict | str | None,
-            'response_time_ms': float | None,
-        }
+        dict with connectivity test results. Keys:
+
+        - ``success`` (``bool``)
+        - ``message`` (``str``)
+        - ``proxy_used`` (``dict | str | None``)
+        - ``response_time_ms`` (``float | None``)
 
     Example:
         >>> result = test_ibm_connectivity(

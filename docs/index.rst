@@ -25,12 +25,12 @@ UnifiedQuantum 是一个 Python 原生、轻量且强调透明性的量子计算
 UnifiedQuantum 的设计围绕一个简洁的工作流：**任意方式构建线路 → CLI 统一执行**。
 
 .. code-block:: bash
-   :caption: 1. 安装
+   :caption: 步骤 1：安装
 
    pip install unified-quantum
 
 .. code-block:: python
-   :caption: 2. 构建线路（支持 UnifiedQuantum 原生或任意第三方工具）
+   :caption: 步骤 2：构建线路（支持 UnifiedQuantum 原生或任意第三方工具）
 
    from uniqc.circuit_builder import Circuit
 
@@ -43,7 +43,7 @@ UnifiedQuantum 的设计围绕一个简洁的工作流：**任意方式构建线
    open('circuit.ir', 'w').write(c.originir)
 
 .. code-block:: bash
-   :caption: 3. CLI 统一执行
+   :caption: 步骤 3：CLI 统一执行
 
    # 本地模拟
    uniqc simulate circuit.ir --shots 1000

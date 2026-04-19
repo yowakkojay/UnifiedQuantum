@@ -21,13 +21,10 @@ def basis_rotation_measurement(
     For each qubit, the rotation applied before measurement is determined
     by the corresponding entry in ``basis``:
 
-    **``"Z"``**: no rotation (Z basis, default)
-
-    **``"X"``**: Hadamard gate (H) → measures X basis
-
-    **``"Y"``**: ``S^dagger H`` → measures Y basis
-
-    **``"I"``**: no rotation (Z basis, identity)
+    - ``"Z"`` — no rotation (Z basis, default)
+    - ``"X"`` — Hadamard gate (H), measures X basis
+    - ``"Y"`` — ``S^dagger H``, measures Y basis
+    - ``"I"`` — no rotation (Z basis, identity)
 
     When ``shots`` is ``None``, the statevector simulator is used to return
     the exact probability distribution.  When ``shots`` is given, the

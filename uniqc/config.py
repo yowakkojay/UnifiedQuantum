@@ -5,7 +5,8 @@ including OriginQ (本源量子), Quafu (夸父), and IBM Quantum.
 
 Configuration file location: ~/.uniqc/uniqc.yml
 
-Example configuration structure:
+Example configuration structure::
+
     default:
       originq:
         token: xxx

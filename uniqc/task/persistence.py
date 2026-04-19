@@ -6,7 +6,8 @@ All storage has been unified onto :class:`uniqc.task.store.TaskStore`
 the same flat-dict interface (``platform``/``status``/``result`` + extra
 keyword metadata).
 
-Usage:
+Usage::
+
     from uniqc.task.persistence import TaskPersistence
 
     persistence = TaskPersistence()

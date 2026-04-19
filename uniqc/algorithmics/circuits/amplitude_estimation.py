@@ -112,9 +112,10 @@ def grover_operator(
     r"""Apply one Grover iteration G = A · S₀ · A† · S_f.
 
     Where:
+
     - S_f is the oracle (phase flip on marked states)
     - A† is the inverse of the state preparation
-    - S₀ is the reflection about |0⟩
+    - S₀ is the reflection about ``|0⟩``
     - A is the state preparation
 
     In the standard QAE formulation, A = H^{⊗n} (uniform superposition),

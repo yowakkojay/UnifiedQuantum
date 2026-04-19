@@ -49,8 +49,8 @@ T = TypeVar("T")
 class CircuitAdapter(abc.ABC, Generic[T]):
     """Abstract base class for circuit adapters.
 
-    Provides a unified interface for converting UnifiedQuantum Circuit objects
-to provider-native circuit formats.
+    Provides a unified interface for converting UnifiedQuantum Circuit
+    objects to provider-native circuit formats.
     """
 
     @abc.abstractmethod

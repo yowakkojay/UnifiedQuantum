@@ -6,16 +6,17 @@ This module provides a centralized Backend management system with:
 - Caching mechanism for backend instances
 - Integration with existing adapters (OriginQ, Quafu, IBM)
 
-Usage:
+Usage::
+
     # Get or create a backend instance
     backend = get_backend('originq')
-    
+
     # List all available backends
     available = list_backends()
-    
+
     # Submit a circuit
     task_id = backend.submit(circuit, shots=1000)
-    
+
     # Query task status
     result = backend.query(task_id)
 """
@@ -557,13 +558,12 @@ class IBMBackend(QuantumBackend):
         """Test connectivity to IBM Quantum services.
 
         Returns:
-            dict with connectivity test results:
-            {
-                'success': bool,
-                'message': str,
-                'proxy_used': dict | None,
-                'response_time_ms': float | None,
-            }
+            dict with connectivity test results. Keys:
+
+            - ``success`` (``bool``)
+            - ``message`` (``str``)
+            - ``proxy_used`` (``dict | None``)
+            - ``response_time_ms`` (``float | None``)
         """
         from uniqc.network_utils import test_ibm_connectivity
 
@@ -643,15 +643,16 @@ def get_backend(
 
 def list_backends() -> dict[str, dict[str, Any]]:
     """List all available backends and their status.
-    
+
     Returns:
-        A dictionary mapping backend names to their information:
-        {
-            'originq': {'available': True, 'platform': 'originq'},
-            'quafu': {'available': False, 'platform': 'quafu'},
-            ...
-        }
-        
+        A dictionary mapping backend names to their information, e.g.::
+
+            {
+                'originq': {'available': True, 'platform': 'originq'},
+                'quafu': {'available': False, 'platform': 'quafu'},
+                ...
+            }
+
     Example:
         >>> backends = list_backends()
         >>> for name, info in backends.items():

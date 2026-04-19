@@ -203,14 +203,14 @@ html_theme_options = {
 
 suppress_warnings = ["myst.xref_missing"]
 
-# Configure intersphinx mappings to resolve external refs (numpy, torch, etc.)
-intersphinx_mapping = {
-    "python": ("https://docs.python.org/3", None),
-    "numpy": ("https://numpy.org/doc/stable", None),
-    "scipy": ("https://docs.scipy.org/doc/scipy", None),
-    "torch": ("https://pytorch.org/docs/stable", None),
-}
-# Fall back to local inventories if offline; don't fail the build on timeout
+# External references (numpy / scipy / torch / python stdlib) are resolved via
+# intersphinx. We source the registry from ``intersphinx-registry`` so URLs
+# stay in sync with the upstream community table rather than hard-coded here.
+from intersphinx_registry import get_intersphinx_mapping
+
+intersphinx_mapping = get_intersphinx_mapping(
+    packages={"python", "numpy", "scipy", "torch"},
+)
 intersphinx_timeout = 5
 
 # Ignore cross-references that autodoc can't resolve but aren't actionable:
@@ -271,6 +271,12 @@ nitpick_ignore = [
     ("py:data", "MIGRATIONS"),
     ("py:data", "CURRENT_SCHEMA_VERSION"),
     ("py:data", "APPLICATION_ID"),
+]
+
+# Ignore :returns: prose like "dict with keys ...", "Dict with keys ..." that
+# autodoc tries to resolve as a class because of autodoc_typehints="description".
+nitpick_ignore_regex = [
+    (r"py:class", r"^[Dd]ict with.*"),
 ]
 
 # Add any paths that contain custom static files (such as style sheets) here,

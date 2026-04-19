@@ -4,7 +4,8 @@ This module provides utilities for handling optional dependencies across
 different quantum cloud platforms. When a dependency is not installed,
 users receive clear instructions on how to install it.
 
-Usage:
+Usage::
+
     # Check if dependency is available
     from uniqc.task.optional_deps import QUAFU_AVAILABLE
     if QUAFU_AVAILABLE:
