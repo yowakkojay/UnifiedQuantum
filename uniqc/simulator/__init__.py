@@ -11,3 +11,8 @@ except ImportError as e:
     warnings.warn('uniqc is not installed with UniqcCpp.')
 
 from .originir_simulator import OriginIR_Simulator, OriginIR_NoisySimulator
+
+try:
+    from .torchquantum_simulator import TORCHQUANTUM_AVAILABLE, TorchQuantumSimulator
+except ImportError:
+    TORCHQUANTUM_AVAILABLE = False
