@@ -80,6 +80,18 @@ def test_submit_accepts_options_after_input_files(tmp_path: Path, monkeypatch):
     assert isinstance(seen["circuit"], str)
 
 
+def test_submit_parse_originir_preserves_measurements(tmp_path: Path):
+    input_file = tmp_path / "bell.ir"
+    _write_originir(input_file)
+
+    circuit = submit_module._parse_to_circuit(input_file.read_text(encoding="utf-8"))
+
+    assert circuit.cbit_num == 2
+    assert circuit.measure_list == [0, 1]
+    assert "MEASURE q[0], c[0]" in circuit.originir
+    assert "MEASURE q[1], c[1]" in circuit.originir
+
+
 def test_result_accepts_options_after_task_id(monkeypatch):
     seen: dict[str, object] = {}
 
