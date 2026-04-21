@@ -24,10 +24,12 @@ from . import submit
 from . import result
 from . import config_cmd as config
 from . import task
-
-app.add_typer(circuit.app, name="circuit")
-app.add_typer(simulate.app, name="simulate")
-app.add_typer(submit.app, name="submit")
-app.add_typer(result.app, name="result")
+# Register single-action entrypoints as direct commands instead of sub-groups.
+# This avoids Click/Typer group parsing quirks where options after positionals
+# are treated as subcommand tokens.
+app.command("circuit", help=circuit.HELP)(circuit.convert)
+app.command("simulate", help=simulate.HELP)(simulate.simulate)
+app.command("submit", help=submit.HELP)(submit.submit)
+app.command("result", help=result.HELP)(result.result)
 app.add_typer(config.app, name="config")
 app.add_typer(task.app, name="task")

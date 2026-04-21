@@ -54,7 +54,6 @@ originq = ["pyqpanda3>=0.3.0"]
 simulation = ["qutip>=5.0", "qutip-qip>=0.4"]
 visualization = ["matplotlib", "seaborn", "pandas"]
 pytorch = ["torch>=2.0"]
-torchquantum = ["torch>=2.0", "torchquantum @ git+https://github.com/Agony5757/torchquantum.git@fix/optional-qiskit-deps"]
 all = [
     "pyquafu>=0.4.0",
     "qiskit>=1.0", "qiskit-ibm-provider>=0.10", "qiskit-aer",
@@ -62,7 +61,6 @@ all = [
     "qutip>=5.0", "qutip-qip>=0.4",
     "matplotlib", "seaborn", "pandas",
     "torch>=2.0",
-    "torchquantum @ git+https://github.com/Agony5757/torchquantum.git@fix/optional-qiskit-deps",
 ]
 
 [tool.setuptools]

@@ -1,11 +1,19 @@
-from uniqc.originir import OriginIR_BaseParser
-import uniqc.simulator as qsim
 import numpy as np
 
-from uniqc.circuit_builder.random_originir import random_originir
-from uniqc.simulator.originir_simulator import OriginIR_Simulator
 from uniqc.circuit_builder import Circuit
-from uniqc.test._utils import uniq_test, NotMatchError
+from uniqc.circuit_builder.random_originir import random_originir
+from uniqc.originir import OriginIR_BaseParser
+from uniqc.simulator.originir_simulator import OriginIR_Simulator
+from uniqc.test._utils import NotMatchError, uniq_test
+
+BELL_ORIGINIR = """QINIT 2
+CREG 2
+H q[0]
+CNOT q[0], q[1]
+MEASURE q[0], c[0]
+MEASURE q[1], c[1]
+"""
+
 
 @uniq_test('Test OriginIR Parser')
 def run_test_originir_parser():
@@ -42,3 +50,15 @@ def run_test_originir_parser():
 
 if __name__ == '__main__':
     run_test_originir_parser()
+
+
+def test_to_circuit_preserves_measurements():
+    parser = OriginIR_BaseParser()
+    parser.parse(BELL_ORIGINIR)
+
+    circuit_obj: Circuit = parser.to_circuit()
+
+    assert circuit_obj.cbit_num == 2
+    assert circuit_obj.measure_list == [0, 1]
+    assert "MEASURE q[0], c[0]" in circuit_obj.originir
+    assert "MEASURE q[1], c[1]" in circuit_obj.originir

@@ -11,7 +11,8 @@ try:
     from uniqc.algorithmics.training.qcnn import QCNNClassifier
 except ImportError as e:
     print(f"Required dependencies not available: {e}")
-    print("Install with: pip install unified-quantum[torchquantum]")
+    print("Install with: pip install unified-quantum[pytorch]")
+    print('Then install TorchQuantum manually: pip install "torchquantum @ git+https://github.com/Agony5757/torchquantum.git@fix/optional-qiskit-deps"')
     raise SystemExit(1)
 
 

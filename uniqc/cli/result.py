@@ -6,12 +6,11 @@ from typing import Optional
 
 import typer
 
-from .output import format_prob, print_error, print_json, print_table
+from .output import extract_counts_and_probs, format_prob, print_error, print_json, print_table
 
-app = typer.Typer(help="Query task results from quantum cloud platforms")
+HELP = "Query task results from quantum cloud platforms"
 
 
-@app.callback(invoke_without_command=True)
 def result(
     task_id: str = typer.Argument(..., help="Task ID to query"),
     platform: Optional[str] = typer.Option(None, "--platform", "-p", help="Platform: originq/quafu/ibm"),
@@ -67,22 +66,36 @@ def _wait_for_result(task_id: str, platform: str | None, timeout: float) -> dict
     return wait_for_result(task_id, backend=platform, timeout=timeout)
 
 
-def _print_result_table(task_id: str, result_data: dict) -> None:
-    """Print result as a table."""
-    total = sum(result_data.values())
-    if total == 0:
-        # Handle empty result case to avoid division by zero
+def _print_result_table(task_id: str, result_data: dict | list) -> None:
+    """Print result as a table, regardless of the adapter-specific shape."""
+    counts, probs = extract_counts_and_probs(result_data)
+
+    if not counts and not probs:
         print_table(
             f"Result for {task_id}",
             ["State", "Count", "Probability"],
-            [[state, str(count), "0.0%"] for state, count in sorted(result_data.items())],
+            [],
         )
-    else:
-        print_table(
-            f"Result for {task_id}",
-            ["State", "Count", "Probability"],
+        return
+
+    if counts:
+        total = sum(counts.values()) or 1
+        rows = [
             [
-                [state, str(count), format_prob(count / total)]
-                for state, count in sorted(result_data.items(), key=lambda x: x[1], reverse=True)
-            ],
-        )
+                state,
+                str(count),
+                format_prob(probs.get(state, count / total)),
+            ]
+            for state, count in sorted(counts.items(), key=lambda x: x[1], reverse=True)
+        ]
+    else:
+        rows = [
+            [state, "-", format_prob(prob)]
+            for state, prob in sorted(probs.items(), key=lambda x: x[1], reverse=True)
+        ]
+
+    print_table(
+        f"Result for {task_id}",
+        ["State", "Count", "Probability"],
+        rows,
+    )

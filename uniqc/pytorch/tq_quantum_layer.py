@@ -13,11 +13,12 @@ try:
     import torch
     import torch.nn as nn
 
-    from uniqc.simulator.torchquantum_simulator import TorchQuantumSimulator
+    from uniqc.simulator.torchquantum_simulator import TORCHQUANTUM_AVAILABLE, TorchQuantumSimulator
 
     TORCH_AVAILABLE = True
 except ImportError:
     TORCH_AVAILABLE = False
+    TORCHQUANTUM_AVAILABLE = False
 
     class nn:  # type: ignore
         class Module:
@@ -30,7 +31,7 @@ if TYPE_CHECKING:
 
 __all__ = ["TorchQuantumLayer"]
 
-if TORCH_AVAILABLE:
+if TORCH_AVAILABLE and TORCHQUANTUM_AVAILABLE:
 
     class TorchQuantumLayer(nn.Module):
         """PyTorch layer using TorchQuantum for native autograd.
@@ -98,5 +99,7 @@ else:
         def __init__(self, *args, **kwargs):
             raise ImportError(
                 "PyTorch and TorchQuantum are required. "
-                "Install with: pip install unified-quantum[torchquantum]"
+                "Install with: pip install unified-quantum[pytorch] && "
+                'pip install "torchquantum @ '
+                'git+https://github.com/Agony5757/torchquantum.git@fix/optional-qiskit-deps"'
             )

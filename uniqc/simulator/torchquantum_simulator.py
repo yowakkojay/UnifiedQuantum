@@ -17,15 +17,27 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import torch
+try:
+    import torch
+
+    TORCH_AVAILABLE = True
+except ImportError:
+    torch = None  # type: ignore
+    TORCH_AVAILABLE = False
 
 try:
-    import torchquantum as tq
-    import torchquantum.functional as tqf
-    from torchquantum.measurement import expval_joint_analytical
+    if TORCH_AVAILABLE:
+        import torchquantum as tq
+        import torchquantum.functional as tqf
+        from torchquantum.measurement import expval_joint_analytical
 
-    TORCHQUANTUM_AVAILABLE = True
+        TORCHQUANTUM_AVAILABLE = True
+    else:
+        TORCHQUANTUM_AVAILABLE = False
 except ImportError:
+    tq = None  # type: ignore
+    tqf = None  # type: ignore
+    expval_joint_analytical = None  # type: ignore
     TORCHQUANTUM_AVAILABLE = False
 
 if TYPE_CHECKING:
@@ -33,39 +45,55 @@ if TYPE_CHECKING:
 
 __all__ = ["TORCHQUANTUM_AVAILABLE", "TorchQuantumSimulator"]
 
-# Gate mapping: Uniqc opcode name → (tqf function, is_parametric)
-_GATE_MAP: dict[str, tuple] = {
-    "H": (tqf.hadamard, False),
-    "X": (tqf.paulix, False),
-    "Y": (tqf.pauliy, False),
-    "Z": (tqf.pauliz, False),
-    "S": (tqf.s, False),
-    "SX": (tqf.sx, False),
-    "T": (tqf.t, False),
-    "I": (tqf.i, False),
-    "RX": (tqf.rx, True),
-    "RY": (tqf.ry, True),
-    "RZ": (tqf.rz, True),
-    "U1": (tqf.u1, True),
-    "U2": (tqf.u2, True),
-    "U3": (tqf.u3, True),
-    "CNOT": (tqf.cnot, False),
-    "CZ": (tqf.cz, False),
-    "SWAP": (tqf.swap, False),
-    "ISWAP": (tqf.iswap, False),
-    "XX": (tqf.rxx, True),
-    "YY": (tqf.ryy, True),
-    "ZZ": (tqf.rzz, True),
-    "TOFFOLI": (tqf.toffoli, False),
-    "CSWAP": (tqf.cswap, False),
-}
+if TORCHQUANTUM_AVAILABLE:
+    # Gate mapping: Uniqc opcode name → (tqf function, is_parametric)
+    _GATE_MAP: dict[str, tuple] = {
+        "H": (tqf.hadamard, False),
+        "X": (tqf.paulix, False),
+        "Y": (tqf.pauliy, False),
+        "Z": (tqf.pauliz, False),
+        "S": (tqf.s, False),
+        "SX": (tqf.sx, False),
+        "T": (tqf.t, False),
+        "I": (tqf.i, False),
+        "RX": (tqf.rx, True),
+        "RY": (tqf.ry, True),
+        "RZ": (tqf.rz, True),
+        "U1": (tqf.u1, True),
+        "U2": (tqf.u2, True),
+        "U3": (tqf.u3, True),
+        "CNOT": (tqf.cnot, False),
+        "CZ": (tqf.cz, False),
+        "SWAP": (tqf.swap, False),
+        "ISWAP": (tqf.iswap, False),
+        "XX": (tqf.rxx, True),
+        "YY": (tqf.ryy, True),
+        "ZZ": (tqf.rzz, True),
+        "TOFFOLI": (tqf.toffoli, False),
+        "CSWAP": (tqf.cswap, False),
+    }
 
-# Dagger-specific overrides
-_DAGGER_MAP: dict[str, tuple] = {
-    "S": (tqf.sdg, False),
-    "SX": (tqf.sxdg, False),
-    "T": (tqf.tdg, False),
-}
+    # Dagger-specific overrides
+    _DAGGER_MAP: dict[str, tuple] = {
+        "S": (tqf.sdg, False),
+        "SX": (tqf.sxdg, False),
+        "T": (tqf.tdg, False),
+    }
+else:
+    _GATE_MAP = {}
+    _DAGGER_MAP = {}
+
+
+def _require_torchquantum() -> None:
+    """Raise a consistent install hint when TorchQuantum backend is unavailable."""
+    if TORCHQUANTUM_AVAILABLE:
+        return
+    raise ImportError(
+        "TorchQuantum backend requires PyTorch and a manual TorchQuantum install. "
+        "Install with: pip install unified-quantum[pytorch] && "
+        'pip install "torchquantum @ '
+        'git+https://github.com/Agony5757/torchquantum.git@fix/optional-qiskit-deps"'
+    )
 
 
 def _extract_n_qubits(opcode_list: list[OpCode]) -> int:
@@ -112,6 +140,7 @@ class TorchQuantumSimulator:
     """
 
     def __init__(self, n_wires: int = 0, device: str = "cpu"):
+        _require_torchquantum()
         self.n_wires = n_wires
         self.device = device
 

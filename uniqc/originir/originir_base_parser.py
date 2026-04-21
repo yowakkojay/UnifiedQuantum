@@ -9,7 +9,6 @@ Key exports:
 
 __all__ = ["OriginIR_BaseParser"]
 from copy import deepcopy
-from typing import List, Tuple
 
 from uniqc.circuit_builder import opcode_to_line_originir
 from uniqc.circuit_builder.qcircuit import Circuit
@@ -31,9 +30,9 @@ class OriginIR_BaseParser:
     def __init__(self):
         self.n_qubit = None
         self.n_cbit = None
-        self.program_body = list()
+        self.program_body = []
         self.raw_originir = None
-        self.measure_qubits: List[Tuple[int, int]] = list()
+        self.measure_qubits: list[tuple[int, int]] = []
 
     def _extract_qinit_statement(self, lines):
         for i, line in enumerate(lines):
@@ -89,7 +88,7 @@ class OriginIR_BaseParser:
 
         control_qubits_set = set()
         dagger_count = 0
-        dagger_stack = list()
+        dagger_stack = []
 
         for lineno in range(current_lineno, len(lines)):
             # handle the line
@@ -171,10 +170,7 @@ class OriginIR_BaseParser:
                     self.measure_qubits.append((qubits, cbit))
                 else:
                     # For common statements (gates)
-                    if dagger_count % 2:
-                        dagger_flag = dagger_flag ^ True
-                    else:
-                        dagger_flag = dagger_flag ^ False
+                    dagger_flag = dagger_flag ^ bool(dagger_count % 2)
 
                     ctrl_qubits = deepcopy(control_qubits_set)
                     # Add the control qubits to the set of control qubits
@@ -225,7 +221,12 @@ class OriginIR_BaseParser:
         """
         ret = f"QINIT {self.n_qubit}\n"
         ret += f"CREG {self.n_cbit}\n"
-        ret += "\n".join([opcode_to_line_originir(opcode) for opcode in self.program_body])
+        body_lines = [opcode_to_line_originir(opcode) for opcode in self.program_body]
+        ret += "\n".join(body_lines)
+        if body_lines:
+            ret += "\n"
+        for qubit, cbit in sorted(self.measure_qubits, key=lambda item: item[1]):
+            ret += f"MEASURE q[{qubit}], c[{cbit}]\n"
         return ret
 
     @property
@@ -252,6 +253,12 @@ class OriginIR_BaseParser:
         for opcode in self.program_body:
             operation, qubits, cbit, parameter, dagger_flag, control_qubits = opcode
             circuit.add_gate(operation, qubits, cbit, parameter, dagger_flag, control_qubits)
+
+        if self.measure_qubits:
+            measured_qubits = [qubit for qubit, _ in sorted(self.measure_qubits, key=lambda item: item[1])]
+            circuit.measure(*measured_qubits)
+        if self.n_cbit is not None:
+            circuit.cbit_num = self.n_cbit
 
         return circuit
 

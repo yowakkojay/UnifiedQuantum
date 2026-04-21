@@ -5,8 +5,10 @@ from __future__ import annotations
 import sys
 from unittest.mock import MagicMock
 
-# Mock uniqc_cpp before importing any uniqc modules
-if 'uniqc_cpp' not in sys.modules:
+# Mock uniqc_cpp only when the real module is unavailable.
+try:
+    import uniqc_cpp  # noqa: F401
+except ImportError:
     sys.modules['uniqc_cpp'] = MagicMock()
 
 import pytest

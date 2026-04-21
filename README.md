@@ -155,6 +155,15 @@ pip install -e . --no-build-isolation
 | PyTorch 集成 | `pip install unified-quantum[pytorch]` |
 | 安装所有可选依赖 | `pip install unified-quantum[all]` |
 
+TorchQuantum 后端当前不包含在 PyPI extras 中，需要手动安装：
+
+```bash
+pip install unified-quantum[pytorch]
+pip install "torchquantum @ git+https://github.com/Agony5757/torchquantum.git@fix/optional-qiskit-deps"
+```
+
+不安装 TorchQuantum 不会影响核心功能、QuTiP 模拟、云平台适配器或常规 `uniqc.pytorch` 功能；只有 TorchQuantum 专用后端与示例会在实际使用时提示缺少该依赖。
+
 ---
 
 ## CLI Quick Reference

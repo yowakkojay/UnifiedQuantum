@@ -8,13 +8,15 @@ from __future__ import annotations
 import sys
 from unittest.mock import MagicMock
 
-# Mock uniqc_cpp before importing any uniqc modules
-if 'uniqc_cpp' not in sys.modules:
-    mock_cpp = MagicMock()
-    sys.modules['uniqc_cpp'] = mock_cpp
+# Mock optional modules only when the real import is unavailable.
+try:
+    import uniqc_cpp  # noqa: F401
+except ImportError:
+    sys.modules['uniqc_cpp'] = MagicMock()
 
-# Also mock pyqpanda3
-if 'pyqpanda3' not in sys.modules:
+try:
+    import pyqpanda3  # noqa: F401
+except ImportError:
     mock_pyqpanda3 = MagicMock()
     sys.modules['pyqpanda3'] = mock_pyqpanda3
     sys.modules['pyqpanda3.core'] = MagicMock()

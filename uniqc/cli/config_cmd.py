@@ -148,10 +148,14 @@ def profile(
     from uniqc.config import get_active_profile, load_config, set_active_profile
 
     if action == "list":
+        from uniqc.config import META_KEYS
+
         config = load_config()
         active = get_active_profile()
         rows = []
         for profile_name in config.keys():
+            if profile_name in META_KEYS:
+                continue
             marker = "[green]*[/green]" if profile_name == active else " "
             rows.append([marker, profile_name])
         print_table("Profiles", ["Active", "Name"], rows)
