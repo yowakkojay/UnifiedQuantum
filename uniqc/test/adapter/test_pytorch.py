@@ -15,17 +15,23 @@ from unittest.mock import MagicMock, Mock, patch
 import numpy as np
 import pytest
 
-# Setup mocks for dependencies
-mock_cpp = MagicMock()
-sys.modules['uniqc_cpp'] = mock_cpp
+# Setup mocks for dependencies only when the real modules are unavailable.
+try:
+    import uniqc_cpp  # noqa: F401
+except ImportError:
+    mock_cpp = MagicMock()
+    sys.modules['uniqc_cpp'] = mock_cpp
 
-mock_pyqpanda3 = MagicMock()
-mock_pyqpanda3.core.draw_qprog = MagicMock()
-mock_pyqpanda3.core.PIC_TYPE = MagicMock()
-mock_pyqpanda3.intermediate_compiler.convert_originir_string_to_qprog = MagicMock()
-sys.modules['pyqpanda3'] = mock_pyqpanda3
-sys.modules['pyqpanda3.core'] = mock_pyqpanda3.core
-sys.modules['pyqpanda3.intermediate_compiler'] = mock_pyqpanda3.intermediate_compiler
+try:
+    import pyqpanda3  # noqa: F401
+except ImportError:
+    mock_pyqpanda3 = MagicMock()
+    mock_pyqpanda3.core.draw_qprog = MagicMock()
+    mock_pyqpanda3.core.PIC_TYPE = MagicMock()
+    mock_pyqpanda3.intermediate_compiler.convert_originir_string_to_qprog = MagicMock()
+    sys.modules['pyqpanda3'] = mock_pyqpanda3
+    sys.modules['pyqpanda3.core'] = mock_pyqpanda3.core
+    sys.modules['pyqpanda3.intermediate_compiler'] = mock_pyqpanda3.intermediate_compiler
 
 
 # =============================================================================
