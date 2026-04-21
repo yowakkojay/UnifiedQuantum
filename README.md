@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="banner_uniqc.png" alt="UnifiedQuantum Banner" width="100%">
+  <img src="https://raw.githubusercontent.com/IAI-USTC-Quantum/UnifiedQuantum/v0.0.5/banner_uniqc.png" alt="UnifiedQuantum Banner" width="100%">
 </p>
 
 # UnifiedQuantum
