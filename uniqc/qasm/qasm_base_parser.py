@@ -266,12 +266,15 @@ class OpenQASM2_BaseParser:
         """Convert parsed OpenQASM data to OriginIR string.
 
         Returns:
-            str: OriginIR string representation.
+            str: OriginIR string representation, including any ``MEASURE``
+            statements collected from the QASM source.
         """
         oir_parser = OriginIR_BaseParser()
         oir_parser.n_qubit = self.n_qubit
         oir_parser.n_cbit = self.n_cbit
         oir_parser.program_body = self.program_body
+        # Without this, OriginIR output silently drops all measurements.
+        oir_parser.measure_qubits = list(self.measure_qubits)
 
         return oir_parser.to_extended_originir()
     

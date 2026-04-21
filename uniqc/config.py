@@ -56,6 +56,10 @@ DEFAULT_CONFIG: dict[str, Any] = {
 # Supported platforms
 SUPPORTED_PLATFORMS = ["originq", "quafu", "ibm"]
 
+# Top-level configuration keys that are *not* profiles (metadata fields).
+# Kept as a single source of truth so CLI and loader logic stay in sync.
+META_KEYS = frozenset({"active_profile"})
+
 # Platform-specific required fields
 PLATFORM_REQUIRED_FIELDS = {
     "originq": ["token"],
@@ -350,7 +354,7 @@ def set_active_profile(
     if profile not in config:
         raise ProfileNotFoundError(
             f"Profile '{profile}' not found in configuration. "
-            f"Available profiles: {', '.join(k for k in config.keys() if k != 'active_profile')}"
+            f"Available profiles: {', '.join(k for k in config.keys() if k not in META_KEYS)}"
         )
 
     config["active_profile"] = profile

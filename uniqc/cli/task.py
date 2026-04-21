@@ -8,6 +8,7 @@ import typer
 
 from .output import (
     console,
+    extract_counts_and_probs,
     format_prob,
     print_error,
     print_info,
@@ -89,12 +90,31 @@ def show(
 
         if task_info.result:
             console.print("\n[bold]Results:[/bold]")
-            total = sum(task_info.result.values())
-            rows = [
-                [state, str(count), format_prob(count / total)]
-                for state, count in sorted(task_info.result.items(), key=lambda x: x[1], reverse=True)
-            ]
-            print_table("Measurement Results", ["State", "Count", "Probability"], rows)
+            counts, probs = extract_counts_and_probs(
+                task_info.result, shots=task_info.shots
+            )
+            # Prefer counts order for display; fall back to probabilities.
+            if counts:
+                rows = [
+                    [
+                        state,
+                        str(count),
+                        format_prob(probs.get(state, count / (sum(counts.values()) or 1))),
+                    ]
+                    for state, count in sorted(
+                        counts.items(), key=lambda x: x[1], reverse=True
+                    )
+                ]
+            else:
+                rows = [
+                    [state, "-", format_prob(prob)]
+                    for state, prob in sorted(
+                        probs.items(), key=lambda x: x[1], reverse=True
+                    )
+                ]
+            print_table(
+                "Measurement Results", ["State", "Count", "Probability"], rows
+            )
 
 
 @app.command()
