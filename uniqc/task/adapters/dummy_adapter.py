@@ -92,7 +92,8 @@ class DummyAdapter(QuantumAdapter):
             available_topology: List of [u, v] edges for qubit connectivity.
 
         Raises:
-            MissingDependencyError: If simulation dependencies are not installed.
+            MissingDependencyError: If the C++ simulator extension (`uniqc_cpp`)
+                required by the default dummy simulation path is not available.
         """
         from ..optional_deps import MissingDependencyError, check_simulation
 
@@ -270,7 +271,7 @@ class DummyAdapter(QuantumAdapter):
         """Check if the dummy adapter is available.
 
         Returns:
-            True if simulation dependencies are installed.
+            True if the C++ simulation backend is available.
         """
         from ..optional_deps import check_simulation
         return check_simulation("cpp")

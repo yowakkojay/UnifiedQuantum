@@ -40,16 +40,18 @@ class MissingDependencyError(ImportError):
     """Raised when an optional dependency is not installed.
 
     Provides a clear error message indicating which package is missing
-    and how to install it using pip extras.
+    and, when available, how to install or rebuild the required support.
 
     Attributes:
         package: The name of the missing package.
-        extra: The pip extras name to install the package.
+        extra: The pip extras name to install the package, if applicable.
+        install_hint: An explicit install or recovery hint, if applicable.
     """
 
     def __init__(self, package: str, extra: str | None = None, install_hint: str | None = None) -> None:
         self.package = package
         self.extra = extra
+        self.install_hint = install_hint
         if install_hint is not None:
             msg = f"Package '{package}' is required for this feature. {install_hint}"
         elif extra is not None:
@@ -183,4 +185,4 @@ QISKIT_AVAILABLE = check_qiskit()
 PYQPANDA3_AVAILABLE = check_pyqpanda3()
 UNIQC_CPP_AVAILABLE = check_uniqc_cpp()
 QUTIP_AVAILABLE = check_qutip()
-SIMULATION_AVAILABLE = check_simulation()
+SIMULATION_AVAILABLE = UNIQC_CPP_AVAILABLE
